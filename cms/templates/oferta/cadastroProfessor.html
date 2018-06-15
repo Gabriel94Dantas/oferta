@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static  %}
+{% block navbar %}
+<ul class="nav-menu">
+          <li class="menu-active"><a href="{% url 'index' %}">Home</a></li>
+  <li><a href="#professor">Professor </a></li>
+        </ul>
+{% endblock %}
+{% block content %}
+<section id="contact">
+      <div class="container wow fadeInUp">
+        <div class="section-header">
+          <h3 class="section-title">Cadastro de Professor</h3>
+          <p class="section-description">Aqui devem ser cadastrados os professores</p>
+        </div>
+      </div>
+<div class="container wow fadeInUp">
+        <div class="row justify-content-center">
+
+          <div class="col-lg-3 col-md-4">
+
+            <div class="info">
+              <div>
+                <i class="fa fa-map-marker"></i>
+                <p>Nome</p>
+              </div>
+
+              <div>
+                <i class="fa fa-envelope"></i>
+                <p>Matrícula</p>
+              </div>
+
+              <div>
+                <i class="fa fa-phone"></i>
+                <p>Cargo Professor</p>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="col-lg-5 col-md-8">
+            <div class="form">
+              <div id="sendmessage">Professor salvo com sucesso! Obrigado!</div>
+              <div id="errormessage"></div>
+              <form action="#professor" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                  <input type="text" name="nome" class="form-control" id="name" placeholder="Seu Nome" data-rule="minlen:4" data-msg="Por favor digite pelo 4 caracteres" />
+                  <div class="validation"></div>
+                </div>
+                <div class="form-group">
+                  <input type="number" class="form-control" name="matricula" id="email" placeholder="Sua Matrícula"/>
+                </div>
+                <div class="form-check">
+                  {% for tipo in tiposProfessor %}
+                  <input type="checkbox" class="form-check-input" id = "{{tipo.descricao}}" name="{{tipo.id_tipo_professor}}"/>
+                  <label class="form-check-label" for="{{tipo.descricao}}">{{tipo.descricao}}</label>
+                  </br>
+                  {% endfor %}
+                </div>
+                <div class="text-center"><button type="submit">Salvar</button></div>
+              </form>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+</section>
+{% endblock %}

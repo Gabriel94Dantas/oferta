@@ -17,10 +17,20 @@ class perfil_usuario(models.Model):
     id_perfil = models.ForeignKey(perfil, related_name='perfil')
     id_usuario = models.ForeignKey(usuario, related_name = 'usuario')
 
+class tipo_professor_manager(models.Manager):
+    def retornarTodos(self):
+        return self.all()
+
+    def retornarPorId(self, query):
+        return self.get_queryset().filter(
+            id_tipo_professor__exact = query
+            )
+
 class tipo_professor(models.Model):
     id_tipo_professor = models.AutoField(primary_key = True)
     descricao = models.CharField('Descricao do tipo de professor', max_length = 500)
     ativo = models.BooleanField(default=True)
+    objects = tipo_professor_manager()
 
 class tipo_disciplina(models.Model):
     id_tipo_disciplina = models.AutoField(primary_key = True)
