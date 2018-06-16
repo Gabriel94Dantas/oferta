@@ -21,6 +21,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 urlpatterns = [
-    url(r'^cms/', include('cms.urls')),
+
     url(r'^admin/', admin.site.urls),
+    url(r'', include('cms.urls')),
 ]
