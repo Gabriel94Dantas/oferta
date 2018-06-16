@@ -37,12 +37,32 @@ class tipo_disciplina(models.Model):
     descricao = models.CharField('Descricao do tipo de disciplina', max_length = 500)
     ativo = models.BooleanField(default = True)
 
+class professor_manager(models.Manager):
+
+    def editarProfessores(self,query,professorEditar):
+        self.filter(id_professor__exact = query)\
+            .update(id_professor = professorEditar.id_professor, nome = professorEditar.nome,
+                    matricula = professorEditar.matricula, id_tipo_professor = professorEditar.id_tipo_professor,
+                    ativo = True)
+
+    def excluirProfessor(self,query):
+        self.filter(id_professor__exact = query).delete()
+
+    def retornarTodosProfessoresAlfabetico(self):
+        return self.all().order_by('nome')
+
+    def retornarPorId(self,query):
+        return self.filter(
+            id_professor__exact = query
+        ).first()
+
 class professor(models.Model):
     id_professor = models.AutoField(primary_key=True)
     nome = models.CharField('Nome do professor', max_length=500)
     matricula = models.CharField('Matricula do professor', max_length=500)
     id_tipo_professor = models.ForeignKey(tipo_professor, related_name='tipo_professor')
     ativo = models.BooleanField(default=True)
+    objects = professor_manager()
 
 class disciplina (models.Model):
     id_disciplina = models.AutoField(primary_key = True)

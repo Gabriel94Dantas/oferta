@@ -10,7 +10,20 @@ class ProfessorForm(forms.ModelForm):
         return tipos
 
     def salvarProfessor(self, professorSalvar):
-        professorSalvar.save()
+        print(str(professorSalvar.id_professor) + professorSalvar.nome + professorSalvar.matricula)
+        if professorSalvar.id_professor == None:
+            professorSalvar.save()
+        else:
+            professor.objects.editarProfessores(professorSalvar.id_professor,professorSalvar)
+
+    def carregarProfessoresAlfabetico(self):
+        return professor.objects.retornarTodosProfessoresAlfabetico()
+
+    def excluirProfessor(self,professorExcluir):
+        professor.objects.excluirProfessor(professorExcluir.id_professor)
+
+    def retornarProfessorPorId(self,idProfessor):
+        return professor.objects.retornarPorId(idProfessor)
 
     class Meta:
         model = professor

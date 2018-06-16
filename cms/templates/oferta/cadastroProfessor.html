@@ -7,7 +7,7 @@
         </ul>
 {% endblock %}
 {% block content %}
-<section id="contact">
+<br id="contact">
       <div class="container wow fadeInUp">
         <div class="section-header">
           <h3 class="section-title">Cadastro de Professor</h3>
@@ -40,25 +40,28 @@
 
           <div class="col-lg-5 col-md-8">
             <div class="form">
-              <div id="sendmessage">Professor salvo com sucesso! Obrigado!</div>
-              <div id="errormessage"></div>
               <form action="#professor" method="post">
                 {% csrf_token %}
                 <div class="form-group">
-                  <input type="text" name="nome" class="form-control" id="name" placeholder="Seu Nome" data-rule="minlen:4" data-msg="Por favor digite pelo 4 caracteres" />
+                  <input type="text" name="nome" class="form-control" value="{{nome}}" id="name" placeholder="Seu Nome" data-rule="minlen:4" data-msg="Por favor digite pelo 4 caracteres" />
                   <div class="validation"></div>
                 </div>
                 <div class="form-group">
-                  <input type="number" class="form-control" name="matricula" id="email" placeholder="Sua Matrícula"/>
+                  <input type="number" class="form-control" value="{{matricula}}" name="matricula" id="email" placeholder="Sua Matrícula"/>
                 </div>
                 <div class="form-check">
                   {% for tipo in tiposProfessor %}
-                  <input type="checkbox" class="form-check-input" id = "{{tipo.descricao}}" name="{{tipo.id_tipo_professor}}"/>
-                  <label class="form-check-label" for="{{tipo.descricao}}">{{tipo.descricao}}</label>
+                    {% if tipoProf != tipo.id_tipo_professor %}
+                      <input type="checkbox" class="form-check-input" id = "{{tipo.descricao}}" name="{{tipo.id_tipo_professor}}"/>
+                      <label class="form-check-label" for="{{tipo.descricao}}">{{tipo.descricao}}</label>
+                    {% else %}
+                      <input type="checkbox" class="form-check-input" id = "{{tipo.descricao}}" value="{{tipo.id_tipo_professor}}" name="{{tipo.id_tipo_professor}}" checked/>
+                      <label class="form-check-label" for="{{tipo.descricao}}">{{tipo.descricao}}</label>
+                    {% endif %}
                   </br>
                   {% endfor %}
                 </div>
-                <div class="text-center"><button type="submit">Salvar</button></div>
+                <div class="text-center"><button  class="btn btn-info"type="submit">Salvar</button></div>
               </form>
             </div>
           </div>
@@ -66,5 +69,36 @@
         </div>
 
       </div>
+
+      </br>
+      </br>
+      <form method="get" action="#professorTable" >
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Nome</th>
+            <th scope="col">Matrícula</th>
+            <th scope="col">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for prof in professores %}
+          <tr>
+            <td>
+              {{prof.nome}}
+            </td>
+            <td>
+              {{prof.matricula}}
+            </td>
+            <td>
+               <button class="btn btn-info" type="submit" value="{{prof.id_professor}}" name="editar" > Editar  </button>
+               <button class="btn btn-info" type="submit" value="{{prof.id_professor}}" name="excluir"> Excluir </button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        </table>
+        </form>
+        </br>
 </section>
 {% endblock %}
