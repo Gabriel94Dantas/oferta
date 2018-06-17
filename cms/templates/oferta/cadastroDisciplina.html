@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% load static  %}
+{% block navbar %}
+<ul class="nav-menu">
+          <li class="menu-active"><a href="{% url 'index' %}">Home</a></li>
+  <li><a href="#professor">Disciplina </a></li>
+        </ul>
+{% endblock %}
+{% block content %}
+<br id="contact">
+      <div class="container wow fadeInUp">
+        <div class="section-header">
+          <h3 class="section-title">Cadastro das Disciplinas</h3>
+          <p class="section-description">Aqui devem ser cadastrados as Disciplinas</p>
+        </div>
+      </div>
+<div class="container wow fadeInUp">
+        <div class="row justify-content-center">
+
+          <div class="col-lg-3 col-md-4">
+
+            <div class="info">
+              <div>
+                <i class="fa fa-map-marker"></i>
+                <p>Nome</p>
+              </div>
+
+              <div>
+                <i class="fa fa-envelope"></i>
+                <p>Créditos</p>
+              </div>
+
+              <div>
+                <i class="fa fa-phone"></i>
+                <p>Tipo Disciplina</p>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="col-lg-5 col-md-8">
+            <div class="form">
+              <form action="#professor" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                  <input type="text" name="nome" class="form-control" value="{{nome}}" id="name" placeholder="Nome da Disciplina" data-rule="minlen:4" data-msg="Por favor digite pelo 4 caracteres" />
+                  <div class="validation"></div>
+                </div>
+                <div class="form-group">
+                  <input type="number" class="form-control" value="{{credito}}" name="credito" id="email" placeholder="Créditos da Disciplina"/>
+                </div>
+                <div class="form-check">
+                  {% for tipo in tiposDisciplina %}
+                    {% if tipoDis != tipo.id_tipo_disciplina %}
+                      <input type="checkbox" class="form-check-input" id = "{{tipo.descricao}}" name="{{tipo.id_tipo_disciplina}}"/>
+                      <label class="form-check-label" for="{{tipo.descricao}}">{{tipo.descricao}}</label>
+                    {% else %}
+                      <input type="checkbox" class="form-check-input" id = "{{tipo.descricao}}" value="{{tipo.id_tipo_disciplina}}" name="{{tipo.id_tipo_disciplina}}" checked/>
+                      <label class="form-check-label" for="{{tipo.descricao}}">{{tipo.descricao}}</label>
+                    {% endif %}
+                  </br>
+                  {% endfor %}
+                </div>
+                <div class="text-center"><button  class="btn btn-info"type="submit">Salvar</button></div>
+              </form>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      </br>
+      </br>
+      <form method="get" action="#disciplina" >
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Nome</th>
+            <th scope="col">Créditos</th>
+              <th scope="col">Tipo Disciplina</th>
+            <th scope="col">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for disc in disciplinas %}
+          <tr>
+            <td>
+              {{disc.nome}}
+            </td>
+            <td>
+              {{disc.creditos}}
+            </td>
+              <td>
+                {{disc.id_tipo_disciplina.descricao}}
+              </td>
+              <td>
+               <button class="btn btn-info" type="submit" value="{{disc.id_disciplina}}" name="editar" > Editar  </button>
+               <button class="btn btn-info" type="submit" value="{{disc.id_disciplina}}" name="excluir"> Excluir </button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        </table>
+        </form>
+        </br>
+</section>
+{% endblock %}

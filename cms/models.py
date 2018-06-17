@@ -32,10 +32,21 @@ class tipo_professor(models.Model):
     ativo = models.BooleanField(default=True)
     objects = tipo_professor_manager()
 
+class tipo_disciplina_manager(models.Manager):
+
+    def retornarTodos(self):
+        return self.all()
+
+    def retornarPorId(self,query):
+        return self.get_queryset().filter(
+            id_tipo_disciplina__exact = query
+        ).first()
+
 class tipo_disciplina(models.Model):
     id_tipo_disciplina = models.AutoField(primary_key = True)
     descricao = models.CharField('Descricao do tipo de disciplina', max_length = 500)
     ativo = models.BooleanField(default = True)
+    objects = tipo_disciplina_manager()
 
 class professor_manager(models.Manager):
 
@@ -64,12 +75,35 @@ class professor(models.Model):
     ativo = models.BooleanField(default=True)
     objects = professor_manager()
 
+class disciplina_manager(models.Manager):
+
+    def editarDisciplina(self,query,disciplinaEditar):
+        self.filter(id_disciplina__exact = query).update(
+            id_disciplina = disciplinaEditar.id_disciplina,
+            nome = disciplinaEditar.nome,
+            creditos = disciplinaEditar.creditos,
+            id_tipo_disciplina = disciplinaEditar.id_tipo_disciplina,
+            ativo = True
+        )
+
+    def excluirDisciplina(self,query):
+        self.filter(id_disciplina__exact = query).delete()
+
+    def retornarTodasDisciplinasAlfabetico(self):
+        return self.all().order_by('nome')
+
+    def retornarDisciplinaPorId(self,query):
+        return self.get_queryset().filter(
+            id_disciplina__exact = query
+        ).first()
+
 class disciplina (models.Model):
     id_disciplina = models.AutoField(primary_key = True)
     nome = models.CharField('Nome da disciplina', max_length = 500)
     creditos = models.IntegerField('Numero de creditos da disciplina', null=True)
     id_tipo_disciplina = models.ForeignKey(tipo_disciplina, related_name = 'tipo_disciplina')
     ativo = models.BooleanField(default = True)
+    objects = disciplina_manager()
 
 class rel_professor_disciplina (models.Model):
     id_rel_professor_disciplina = models.AutoField(primary_key = True)

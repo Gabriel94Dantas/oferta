@@ -1,7 +1,10 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
 from .forms import ProfessorForm
 from .models import tipo_professor
 from .models import professor
+from .forms import DisciplinaForm
+from .models import disciplina
 
 # Create your views here.
 
@@ -46,6 +49,8 @@ def cadastroProfessor(request):
 
         professores = form.carregarProfessoresAlfabetico()
 
+        return redirect('cadastroProfessor')
+
     else:
 
         idProfessor = request.GET.get('editar')
@@ -84,3 +89,91 @@ def cadastroProfessor(request):
     template_name = 'oferta/cadastroProfessor.html'
 
     return render(request, template_name, context)
+
+def cadastroDisciplina(request):
+    context = {}
+
+    if request.method == 'POST':
+        form = DisciplinaForm()
+        tiposDisciplina = form.carregarTiposDisciplina()
+
+        nome = request.POST.get('nome')
+        print(nome + '\n')
+
+        credito = request.POST.get('credito')
+        print(credito + '\n')
+
+        idDisciplina = request.GET.get('editar')
+        print(str(idDisciplina) + '\n')
+
+        for tipo in tiposDisciplina:
+            idTipoDisciplina = request.POST.get(str(tipo.id_tipo_disciplina))
+            print(str(idTipoDisciplina) + '\n')
+
+            if (idTipoDisciplina == str(tipo.id_tipo_disciplina) or idTipoDisciplina == 'on'):
+                tipoDisciplina = form.retornarTipoPorId(tipo.id_tipo_disciplina)
+                break
+
+        disciplinaSalvar = disciplina()
+
+        if idDisciplina != None:
+            disciplinaSalvar.id_disciplina = idDisciplina
+
+        disciplinaSalvar.nome = nome
+        disciplinaSalvar.creditos = credito
+        disciplinaSalvar.id_tipo_disciplina = tipoDisciplina
+        disciplinaSalvar.ativo = True
+
+        print('Cheguei no salva \n')
+        form.salvarDisciplina(disciplinaSalvar)
+
+        disciplinas = form.carregarDisciplinasAlfabetico()
+
+        return redirect('cadastroDisciplina')
+
+    else:
+
+        idDisciplina = request.GET.get('editar')
+
+        if idDisciplina != None:
+
+            form = DisciplinaForm()
+            tiposDisciplina = form.carregarTiposDisciplina()
+            disciplinas = form.carregarDisciplinasAlfabetico()
+            disciplinaEditar = form.retornarDisciplinaPorId(idDisciplina)
+
+            context['nome'] = disciplinaEditar.nome
+            context['credito'] = disciplinaEditar.creditos
+
+            for tipo in tiposDisciplina:
+                if disciplinaEditar.id_tipo_disciplina.id_tipo_disciplina == tipo.id_tipo_disciplina:
+                    context[str(tipo.id_tipo_disciplina)] = tipo.id_tipo_disciplina
+                    context['tipoDis'] = tipo.id_tipo_disciplina
+                    break
+
+        else:
+
+            idDisciplina = request.GET.get('excluir')
+
+            if idDisciplina != None:
+                form = DisciplinaForm()
+                form.excluirDisciplina(idDisciplina)
+                tiposDisciplina = form.carregarTiposDisciplina()
+                disciplinas = form.carregarDisciplinasAlfabetico()
+
+            else:
+                form = DisciplinaForm()
+                tiposDisciplina = form.carregarTiposDisciplina()
+                disciplinas = form.carregarDisciplinasAlfabetico()
+
+
+
+    context['tiposDisciplina'] = tiposDisciplina
+    context['disciplinas'] = disciplinas
+    context['form'] = form
+    template_name = 'oferta/cadastroDisciplina.html'
+
+    return render(request,template_name,context)
+
+
+
