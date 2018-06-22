@@ -1,12 +1,31 @@
 from django.db import models
 
 # Create your models here.
+class usuario_manager(models.Manager):
+
+    def retornarTodos(self):
+        return self.all()
+
+    def retornarPorId(self,query):
+        return self.get_queryset().filter(
+            id_usuario__exact = query
+        ).first()
+    def autenticacao(self, email, senha):
+        return self.get_queryset().filter(
+            email__exact = email,
+            senha__exact = senha
+            )
+
+
 
 class usuario (models.Model):
     id_usuario = models.AutoField(primary_key = True)
+    nome = models.CharField('Nome', max_length = 500)
     email = models.CharField('Descrição do Relacionamento Característica Tarefa', max_length = 500)
     senha = models.CharField('Onde será salva a senha no banco de dados', max_length = 500)
     ativo = models.BooleanField(default=True)
+    objects = usuario_manager()
+
 
 class perfil (models.Model):
     id_perfil = models.AutoField(primary_key = True)

@@ -5,8 +5,47 @@ from .models import tipo_professor
 from .models import professor
 from .forms import DisciplinaForm
 from .models import disciplina
+from .forms import LoginForm
+from .models import usuario
+from .forms import CadastroForm
+
 
 # Create your views here.
+def cadastro(request):
+    context = {}
+    template_name = 'oferta/cadastro.html'
+    if request.method == 'POST':
+        form = CadastroForm()
+        email = request.POST.get('emailC')
+        senha = request.POST.get('senhaC')
+        nome = request.POST.get('nomeC')
+        Csenha = request.POST.get('Csenha')
+
+        usuarioSalvar = usuario()
+
+        usuarioSalvar.ativo = True
+        usuarioSalvar.email = email
+        usuarioSalvar.senha = senha
+        usuarioSalvar.nome = nome
+        form.salvarUsuario(usuarioSalvar)
+        return redirect('/cms/login/')
+    return render(request, template_name, context)
+
+
+def login(request):
+    context = {}
+    template_name = 'oferta/login.html'
+    if request.method == 'POST':
+        form = LoginForm()
+        email = request.POST.get('email')
+        senha = request.POST.get('senha')
+        print((form.autenticar(email, senha)))
+        print(form.autenticar(email, senha).none())
+        if(form.autenticar(email, senha)):
+            return redirect('/cms/index/')
+    return render(request, template_name, context)
+
+
 
 def index(request):
     return render(request, 'oferta/index.html')

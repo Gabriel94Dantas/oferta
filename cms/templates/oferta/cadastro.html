@@ -1,0 +1,27 @@
+{% load static  %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>CSSO</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	<link href="{% static 'Regna/css/style.css' %}" rel="stylesheet">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+	<div style="position: absolute;left:30%;right:30%;top: 20%;bottom: 20%;;">
+		<form class="form" action="#login" method="post">
+			{% csrf_token %}
+			<h1>Cadastro</h1>
+			<label for="Nome">Nome: </label><input  class="form-control" id="Nome" name="nomeC" autofocus required>
+			<label for="Email">E-mail: </label><input class="form-control" id="Email" name="emailC" autofocus required>
+            <label for="Senha">Senha: </label><input  class="form-control" id="Senha" name="senhaC" autofocus required type="password">
+			<label for="Confirmesenha">Confirmar Senha: </label><input class="form-control" id="Confirmesenha" name="Csenha" autofocus required type="password">
+			<br/>
+
+			<button class="form-control btn btn-primary col-3" type="submit">Entrar</button>
+
+		</form>
+	</div>
+</body>
+</html>

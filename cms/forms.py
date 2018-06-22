@@ -3,8 +3,31 @@ from django import forms
 from .models import professor
 from .models import tipo_professor
 from .models import disciplina
-from .models import tipo_disciplina
+from .models import usuario
 
+
+
+
+
+class LoginForm(forms.ModelForm):
+    def autenticar(self, email, senha):
+        return usuario.objects.autenticacao(email, senha)
+
+    class Meta:
+        model = usuario
+        fields = ('id_usuario', 'email', 'nome', 'senha', 'ativo')
+
+
+class CadastroForm(forms.ModelForm):
+    def salvarUsuario(self, usuario):
+        if usuario.id_usuario == None:
+            usuario.save()
+
+
+
+    class Meta:
+        model = usuario
+        fields = ('id_usuario', 'email', 'nome', 'senha', 'ativo')
 class ProfessorForm(forms.ModelForm):
 
     def carregarTipoProfessor(self):
