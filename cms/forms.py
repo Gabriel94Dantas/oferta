@@ -6,6 +6,7 @@ from .models import disciplina
 from .models import usuario
 from .models import tipo_disciplina
 from .models import cargo
+from .models import rel_professor_disciplina
 
 
 
@@ -109,3 +110,18 @@ class CargoForm(forms.ModelForm):
     class Meta:
         model = cargo
         fields = ('id_cargo', 'nome', 'ativo','pontos')
+
+class RankingForm(forms.ModelForm):
+
+    def carregarRankingPontuacaoDesc(self):
+        return professor.objects.carregarRankingOrdenadoPontosDesc()
+
+    def carregarRankingPontuacaoAsc(self):
+        return professor.objects.carregarRankingOrdenadoPontosAsc()
+
+    def carregarRankingAlfabetico(self):
+        return professor.objects.carregarRankingOrdenadoNome()
+
+    class Meta:
+        model = professor
+        fields = ('id_professor', 'nome', 'matricula')

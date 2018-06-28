@@ -10,6 +10,7 @@ from .models import usuario
 from .forms import CadastroForm
 from .forms import CargoForm
 from .models import cargo
+from .forms import RankingForm
 
 
 # Create your views here.
@@ -283,3 +284,43 @@ def cadastroCargo(request):
     return render(request, template_name, context)
 
 
+def professorDisciplinaPasso1(request):
+
+    context = {}
+    form = RankingForm()
+
+    if request.method == 'POST':
+
+        ordena = request.POST.get('ordena')
+
+        print(ordena + 'PRINT AQUI')
+
+        if ordena == 'alf':
+
+            ranks = form.carregarRankingAlfabetico()
+
+        else:
+
+            if ordena == 'pontosasc':
+
+                ranks = form.carregarRankingPontuacaoAsc()
+
+            else:
+
+                if ordena == 'pontosdesc':
+
+                    ranks = form.carregarRankingPontuacaoDesc()
+
+                else:
+                    print('ERRO NO ranking')
+
+    else:
+
+        ranks = form.carregarRankingAlfabetico()
+
+
+    context['ranks'] = ranks
+    context['form'] = form
+    template_name = 'oferta/vinculoProfessorDisciplina.html'
+
+    return render(request, template_name, context)

@@ -11,30 +11,48 @@
       <div class="container wow fadeInUp">
         <div class="section-header">
           <h3 class="section-title">Vinculador Disciplina Professor</h3>
-          <p class="section-description">Esta seção é destinada para designar o professor para a matéria desejada.</p>
+          <p class="section-description">Esta seção é destinada para designar o professor para a matéria desejada e realizar vinculo quanto a cargo</p>
         </div>
       </div>
-      <form method="get" action="#professorTable" >
+
+      <form method="post" action="#orderRank">
+        {% csrf_token %}
+        <div class="text-center">
+          <div class="btn-group">
+            <button type="submit" class="btn btn-info" value="alf" name="ordena">Alfebética</button>
+            <button type="submit" class="btn btn-info" value="pontosasc" name="ordena">Por Pontos</button>
+            <button type="submit" class="btn btn-info" value="pontosdesc" name="ordena">Por Pontos Decrescente</button>
+          </div>
+        </div>
+      </form>
+
+      <br/>
+      <br/>
+
+      <form method="get" action="#rankingTable" >
       <table class="table">
         <thead class="thead-dark">
           <tr>
             <th scope="col">Nome</th>
             <th scope="col">Matrícula</th>
+            <th scope="col">Pontos</th>
             <th scope="col">Ações</th>
           </tr>
         </thead>
         <tbody>
-          {% for prof in professores %}
+          {% for rank in ranks %}
           <tr>
             <td>
-              {{prof.nome}}
+              {{rank.nome}}
             </td>
             <td>
-              {{prof.matricula}}
+              {{rank.matricula}}
             </td>
             <td>
-               <button class="btn btn-info" type="submit" value="{{prof.id_professor}}" name="editar" > Editar  </button>
-               <button class="btn btn-info" type="submit" value="{{prof.id_professor}}" name="excluir"> Excluir </button>
+              {{rank.pontuacao}}
+            </td>
+            <td>
+               <button class="btn btn-info" type="submit" value="{{rank.id_professor}}" name="vincula" > Vincular</button>
             </td>
           </tr>
           {% endfor %}

@@ -75,6 +75,24 @@ class professor_manager(models.Manager):
                     matricula = professorEditar.matricula, id_tipo_professor = professorEditar.id_tipo_professor,
                     ativo = True)
 
+    def carregarRankingOrdenadoPontosDesc(self):
+        return self.raw('SELECT p.id_professor, p.nome, p.matricula, ' +
+                        'sum(rpd.pontos) as pontuacao from cms_professor as p left join cms_rel_professor_disciplina ' +
+                        'as rpd on p.id_professor = rpd.id_professor_id GROUP BY p.id_professor, ' +
+                        'p.nome, p.matricula ORDER BY pontuacao desc')
+
+    def carregarRankingOrdenadoPontosAsc(self):
+        return self.raw('SELECT p.id_professor, p.nome, p.matricula, ' +
+                        'sum(rpd.pontos) as pontuacao from cms_professor as p left join cms_rel_professor_disciplina ' +
+                        'as rpd on p.id_professor = rpd.id_professor_id GROUP BY p.id_professor, ' +
+                        'p.nome, p.matricula ORDER BY pontuacao asc')
+
+    def carregarRankingOrdenadoNome(self):
+        return self.raw('SELECT p.id_professor, p.nome, p.matricula, ' +
+                        'sum(rpd.pontos) as pontuacao from cms_professor as p left join cms_rel_professor_disciplina ' +
+                        'as rpd on p.id_professor = rpd.id_professor_id GROUP BY p.id_professor, ' +
+                        'p.nome, p.matricula ORDER BY p.nome asc')
+
     def excluirProfessor(self,query):
         self.filter(id_professor__exact = query).delete()
 
@@ -151,6 +169,7 @@ class cargo (models.Model):
     ativo = models.BooleanField(default = True)
     pontos = models.FloatField('Cadastro dos pontos', null = False)
     objects = cargo_manager()
+
 
 class rel_professor_disciplina (models.Model):
     id_rel_professor_disciplina = models.AutoField(primary_key = True)
