@@ -5,6 +5,7 @@ from .models import tipo_professor
 from .models import disciplina
 from .models import usuario
 from .models import tipo_disciplina
+from .models import cargo
 
 
 
@@ -84,3 +85,27 @@ class DisciplinaForm(forms.ModelForm):
     class Meta:
         model = disciplina
         fields = ('id_disciplina', 'nome', 'creditos', 'id_tipo_disciplina', 'ativo')
+
+class CargoForm(forms.ModelForm):
+
+    def carregarCargosAlfabetico(self):
+        return cargo.objects.retornarTodosAlfabetico()
+
+    def retornarCargoPorId(self, idCargo):
+        return cargo.objects.retornarCargoPorId(idCargo)
+
+    def editar(self,cargoEditar):
+        return cargo.objects.editarCargo(cargoEditar.id_cargo, cargoEditar)
+
+    def excluir(self, idCargo):
+        return cargo.objects.excluirCargo(idCargo)
+
+    def salvar(self,cargoSalvar):
+        if cargoSalvar.id_cargo == None:
+            cargoSalvar.save()
+        else:
+            self.editar(cargoSalvar)
+
+    class Meta:
+        model = cargo
+        fields = ('id_cargo', 'nome', 'ativo')

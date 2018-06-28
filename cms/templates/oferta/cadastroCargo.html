@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static  %}
+{% block navbar %}
+<ul class="nav-menu">
+          <li class="menu-active"><a href="{% url 'index' %}">Home</a></li>
+  <li><a href="#cargo">Cargo </a></li>
+        </ul>
+{% endblock %}
+{% block content %}
+<br id="contact">
+        <div class="section-header">
+          <h3 class="section-title">Cadastro de Cargos</h3>
+          <p class="section-description">Aqui devem ser cadastrados os Cargos</p>
+        </div>
+      </div>
+<div class="container wow fadeInUp">
+        <div class="row justify-content-center">
+
+          <div class="col-lg-3 col-md-4">
+
+            <div class="info">
+              <div>
+                <i class="fa fa-map-marker"></i>
+                <p>Nome</p>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="col-lg-5 col-md-8">
+            <div class="form">
+              <form action="#cargo" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                  <input type="text" name="nome" class="form-control" value="{{nome}}" id="name" placeholder="Nome do Cargo" data-rule="minlen:4" data-msg="Por favor digite pelo 4 caracteres" />
+                  <div class="validation"></div>
+                </div>
+                <div class="text-center"><button  class="btn btn-info"type="submit">Salvar</button></div>
+              </form>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      </br>
+      </br>
+      <form method="get" action="#cargo" >
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Nome</th>
+            <th scope="col">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for cg in cargos %}
+          <tr>
+            <td>
+              {{cg.nome}}
+            </td>
+              <td>
+               <button class="btn btn-info" type="submit" value="{{cg.id_cargo}}" name="editar" > Editar  </button>
+               <button class="btn btn-info" type="submit" value="{{cg.id_cargo}}" name="excluir"> Excluir </button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        </table>
+        </form>
+        </br>
+</section>
+{% endblock %}

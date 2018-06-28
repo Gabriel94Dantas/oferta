@@ -8,6 +8,8 @@ from .models import disciplina
 from .forms import LoginForm
 from .models import usuario
 from .forms import CadastroForm
+from .forms import CargoForm
+from .models import cargo
 
 
 # Create your views here.
@@ -215,5 +217,64 @@ def cadastroDisciplina(request):
 
     return render(request,template_name,context)
 
+
+def cadastroCargo(request):
+    context = {}
+
+    if request.method == 'POST':
+        form = CargoForm()
+
+        nome = request.POST.get('nome')
+        print(nome + '\n')
+
+        idCargo = request.GET.get('editar')
+        print(str(idCargo) + '\n')
+
+
+        cargoSalvar = cargo()
+
+        if idCargo != None:
+            cargoSalvar.id_cargo = idCargo
+
+        cargoSalvar.nome = nome
+        cargoSalvar.ativo = True
+
+        print('Cheguei no salva \n')
+        form.salvar(cargoSalvar)
+
+        cargos = form.carregarCargosAlfabetico()
+
+        return redirect('cadastroCargo')
+
+    else:
+
+        idCargo = request.GET.get('editar')
+
+        if idCargo != None:
+
+            form = CargoForm()
+            cargos = form.carregarCargosAlfabetico()
+            cargoEditar = form.retornarCargoPorId(idCargo)
+
+            context['nome'] = cargoEditar.nome
+
+        else:
+
+            idCargo = request.GET.get('excluir')
+
+            if idCargo != None:
+                form = CargoForm()
+                form.excluir(idCargo)
+                cargos = form.carregarCargosAlfabetico()
+
+            else:
+                form = CargoForm()
+                cargos = form.carregarCargosAlfabetico()
+
+    context['cargos'] = cargos
+    context['form'] = form
+    template_name = 'oferta/cadastroCargo.html'
+
+    return render(request, template_name, context)
 
 

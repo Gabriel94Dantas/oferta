@@ -124,9 +124,38 @@ class disciplina (models.Model):
     ativo = models.BooleanField(default = True)
     objects = disciplina_manager()
 
+class cargo_manager(models.Manager):
+
+    def retornarTodosAlfabetico(self):
+        return self.all().order_by('nome')
+
+    def retornarCargoPorId(self,query):
+        return self.get_queryset().filter(
+            id_cargo__exact = query
+        ).first()
+
+    def editarCargo(self, query, cargoEditar):
+        self.filter(id_cargo__exact = query).update(
+            id_cargo = cargoEditar.id_cargo,
+            nome = cargoEditar.nome,
+            ativo = cargoEditar.ativo
+        )
+
+    def excluirCargo(self,query):
+        self.filter(id_cargo__exact = query).delete()
+
+class cargo (models.Model):
+    id_cargo = models.AutoField(primary_key = True)
+    nome = models.CharField('Nome do cargo', max_length = 500)
+    ativo = models.BooleanField(default = True)
+    objects = cargo_manager()
+
 class rel_professor_disciplina (models.Model):
     id_rel_professor_disciplina = models.AutoField(primary_key = True)
-    id_professor = models.ForeignKey(professor, related_name='professor')
-    id_disciplina = models.ForeignKey(disciplina, related_name = 'disciplina')
+    id_professor = models.ForeignKey(professor, related_name='professor', null = False)
+    id_disciplina = models.ForeignKey(disciplina, related_name = 'disciplina', null = True)
+    id_cargo = models.ForeignKey(cargo, related_name = 'cargo', null = True)
     semestre = models.IntegerField('Semestre primeiro ou segundo', null =  True)
     ano =  models.IntegerField('Ano gravado', null = True)
+    pontos = models.FloatField('Cadastro dos pontos desta relacao', null = True)
+    turno = models.CharField('Determina se a materia e noturna ou diurna', max_length = 100,null = True)
