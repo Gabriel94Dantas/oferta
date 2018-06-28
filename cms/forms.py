@@ -108,4 +108,4 @@ class CargoForm(forms.ModelForm):
 
     class Meta:
         model = cargo
-        fields = ('id_cargo', 'nome', 'ativo')
+        fields = ('id_cargo', 'nome', 'ativo','pontos')

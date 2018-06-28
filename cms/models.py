@@ -138,7 +138,8 @@ class cargo_manager(models.Manager):
         self.filter(id_cargo__exact = query).update(
             id_cargo = cargoEditar.id_cargo,
             nome = cargoEditar.nome,
-            ativo = cargoEditar.ativo
+            ativo = cargoEditar.ativo,
+            pontos = cargoEditar.pontos
         )
 
     def excluirCargo(self,query):
@@ -148,6 +149,7 @@ class cargo (models.Model):
     id_cargo = models.AutoField(primary_key = True)
     nome = models.CharField('Nome do cargo', max_length = 500)
     ativo = models.BooleanField(default = True)
+    pontos = models.FloatField('Cadastro dos pontos', null = False)
     objects = cargo_manager()
 
 class rel_professor_disciplina (models.Model):

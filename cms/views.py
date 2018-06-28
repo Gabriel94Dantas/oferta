@@ -227,6 +227,9 @@ def cadastroCargo(request):
         nome = request.POST.get('nome')
         print(nome + '\n')
 
+        pontos = request.POST.get('ponto')
+        print(pontos + '\n')
+
         idCargo = request.GET.get('editar')
         print(str(idCargo) + '\n')
 
@@ -237,6 +240,7 @@ def cadastroCargo(request):
             cargoSalvar.id_cargo = idCargo
 
         cargoSalvar.nome = nome
+        cargoSalvar.pontos = pontos
         cargoSalvar.ativo = True
 
         print('Cheguei no salva \n')
@@ -257,7 +261,8 @@ def cadastroCargo(request):
             cargoEditar = form.retornarCargoPorId(idCargo)
 
             context['nome'] = cargoEditar.nome
-
+            context['ponto'] = str(cargoEditar.pontos)
+            print(str(cargoEditar.pontos) + '\n')
         else:
 
             idCargo = request.GET.get('excluir')
