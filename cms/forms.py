@@ -125,3 +125,13 @@ class RankingForm(forms.ModelForm):
     class Meta:
         model = professor
         fields = ('id_professor', 'nome', 'matricula')
+
+class InfoProfForm(forms.Form):
+
+    def retornarProfId(self,idprofessor):
+        return professor.objects.retornarPorId(idprofessor)
+
+    def carregartodoscargos(self):
+        return cargo.objects.retornarTodosAlfabetico()
+
+    def retornarCargoProf(self,idprofessor):

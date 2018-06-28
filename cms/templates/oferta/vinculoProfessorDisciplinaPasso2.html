@@ -1,10 +1,97 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% load static  %}
+{% block navbar %}
+<ul class="nav-menu">
+          <li class="menu-active"><a href="{% url 'index' %}">Home</a></li>
+          <li class="menu-active"><a href="{% url 'professorDisciplinaPasso1' %}">Vinculador Disciplina Professor</a></li>
+          <li><a href="#infodeprofessor">Informação do professor</a></li>
+</ul>
+{% endblock %}
+{% block content %}
+<br id="contact">
+      <div class="container wow fadeInUp">
+        <div class="section-header">
+          <h3 class="section-title">Informação de Professor</h3>
+          <p class="section-description">Aqui deve aparecer a informação do professore selecionado</p>
+        </div>
+      </div>
+<div class="container wow fadeInUp">
+        <div class="row justify-content-center">
+          <div class="col-lg-3 col-md-4">
 
-</body>
-</html>
+            <div class="info">
+              <div>
+                <p>Nome</p>
+              </div>
+
+              <div>
+                <p>Matrícula</p>
+              </div>
+
+                <div>
+                <p>Semestre</p>
+              </div>
+
+                <div>
+                <p>Ano</p>
+              </div>
+
+              <div>
+                <p>Cargos</p>
+              </div>
+
+                <div>
+                <p>Disciplinas</p>
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="col-lg-5 col-md-8">
+            <div class="form">
+              <form action="#professor" method="post">
+                {% csrf_token %}
+
+                <div class="form-group">
+                  <p>{{professor.nome}}</p>
+                </div>
+
+                  <div class="form-group">
+                  <p>{{professor.matricula}}</p>
+                </div>
+
+
+                <div class="form-group">
+                  <input type="number" class="form-control" value="{{semestre}}" name="semestre" id="email" placeholder="Semestre"/>
+                </div>
+
+                   <div class="form-group">
+                  <input type="number" class="form-control" value="{{ano}}" name="ano" id="email" placeholder="Ano"/>
+                </div>
+
+                <div class="form-check">
+                  {% for cargo in cargos %}
+                    {% if tipoProf != tipo.id_tipo_professor %}
+                      <input type="checkbox" class="form-check-input" id = "{{tipo.descricao}}" name="{{tipo.id_tipo_professor}}"/>
+                      <label class="form-check-label" for="{{tipo.descricao}}">{{tipo.descricao}}</label>
+                    {% else %}
+                      <input type="checkbox" class="form-check-input" id = "{{tipo.descricao}}" value="{{tipo.id_tipo_professor}}" name="{{tipo.id_tipo_professor}}" checked/>
+                      <label class="form-check-label" for="{{tipo.descricao}}">{{tipo.descricao}}</label>
+                    {% endif %}
+                  </br>
+                  {% endfor %}
+                </div>
+                <div class="text-center"><button  class="btn btn-info"type="submit">Salvar</button></div>
+              </form>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+</section>
+{% endblock %}
