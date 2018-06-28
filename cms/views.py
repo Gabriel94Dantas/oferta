@@ -14,6 +14,7 @@ from .forms import CadastroForm
 def cadastro(request):
     context = {}
     template_name = 'oferta/cadastro.html'
+    form = CadastroForm()
     if request.method == 'POST':
         form = CadastroForm()
         email = request.POST.get('emailC')
@@ -28,7 +29,7 @@ def cadastro(request):
         usuarioSalvar.senha = senha
         usuarioSalvar.nome = nome
         form.salvarUsuario(usuarioSalvar)
-        return redirect('/cms/login/')
+        return redirect('/')
     return render(request, template_name, context)
 
 

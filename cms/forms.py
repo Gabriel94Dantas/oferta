@@ -4,6 +4,7 @@ from .models import professor
 from .models import tipo_professor
 from .models import disciplina
 from .models import usuario
+from .models import tipo_disciplina
 
 
 
@@ -16,7 +17,6 @@ class LoginForm(forms.ModelForm):
     class Meta:
         model = usuario
         fields = ('id_usuario', 'email', 'nome', 'senha', 'ativo')
-
 
 class CadastroForm(forms.ModelForm):
     def salvarUsuario(self, usuario):

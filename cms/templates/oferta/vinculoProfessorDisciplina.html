@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static  %}
+{% block navbar %}
+<ul class="nav-menu">
+          <li class="menu-active"><a href="{% url 'index' %}">Home</a></li>
+  <li><a href="#disciplina&professor"> Vinculador Disciplina Professor </a></li>
+        </ul>
+{% endblock %}
+{% block content %}
+<br id="contact">
+      <div class="container wow fadeInUp">
+        <div class="section-header">
+          <h3 class="section-title">Vinculador Disciplina Professor</h3>
+          <p class="section-description">Esta seção é destinada para designar o professor para a matéria desejada.</p>
+        </div>
+      </div>
+      <form method="get" action="#professorTable" >
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Nome</th>
+            <th scope="col">Matrícula</th>
+            <th scope="col">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for prof in professores %}
+          <tr>
+            <td>
+              {{prof.nome}}
+            </td>
+            <td>
+              {{prof.matricula}}
+            </td>
+            <td>
+               <button class="btn btn-info" type="submit" value="{{prof.id_professor}}" name="editar" > Editar  </button>
+               <button class="btn btn-info" type="submit" value="{{prof.id_professor}}" name="excluir"> Excluir </button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        </table>
+        </form>
+        </br>
+</section>
+{% endblock %}
