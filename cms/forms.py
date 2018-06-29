@@ -9,7 +9,8 @@ from .models import cargo
 from .models import rel_professor_disciplina
 from .dtos import cargoProf
 from .dtos import DisciplinaDTO
-
+from .enums import PontosDisciplina
+from .enums import TipoDisciplina
 
 
 
@@ -190,3 +191,79 @@ class InfoProfForm(forms.Form):
             disciplinasDTO.append(disciplinaDTO)
 
         return disciplinasDTO
+
+    def retornarCargoPorId(self, idCargo):
+        return cargo.objects.retornarCargoPorId(idCargo)
+
+    def retornarDisciplinaPorId(self,idDisciplina):
+        return disciplina.objects.retornarDisciplinaPorId(idDisciplina)
+
+    def retornarQuantidadePontos(self, relProfessorDisciplina):
+
+        if relProfessorDisciplina.id_cargo != None:
+            return relProfessorDisciplina.id_cargo.pontos
+
+        else:
+
+            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.GRADUACAO:
+                if relProfessorDisciplina == 'Diurno':
+                    pontos = relProfessorDisciplina.id_disciplina.creditos * PontosDisciplina.DISCIPLINA_DIURNO
+                else:
+                    pontos = relProfessorDisciplina.id_disciplina.creditos * PontosDisciplina.DISCIPLINA_NOTURNO
+
+                if relProfessorDisciplina.numero_alunos < 6:
+                    pontos = pontos / 2
+
+                return pontos
+
+            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.TRABALHO_GRADUACAO:
+                pontos = PontosDisciplina.PROJETO_GRADUACAO * relProfessorDisciplina.numero_alunos
+                return pontos
+
+            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.PROJETO_LICENCIATURA:
+                pontos = PontosDisciplina.PROJETO_GRADUACAO * relProfessorDisciplina.numero_alunos
+                return pontos
+
+            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.INICIACAO_CIENTIFICA:
+                pontos = PontosDisciplina.PERIODICO_OUTROS * relProfessorDisciplina.numero_alunos
+                return pontos
+
+            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.MESTREDO:
+                pontos = PontosDisciplina.PROJETO_MESTRADO * relProfessorDisciplina.numero_alunos
+                return pontos
+
+            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.DOUTORADO:
+                pontos = PontosDisciplina.PROJETO_DOUTORADO * relProfessorDisciplina.numero_alunos
+                return pontos
+
+            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.A1:
+                pontos = PontosDisciplina.PERIODICO_A1 *  relProfessorDisciplina.numero_alunos
+                return pontos
+
+            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.A2:
+                pontos = PontosDisciplina.PERIODICO_A2 * relProfessorDisciplina.numero_alunos
+                return pontos
+
+            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.B1:
+                pontos = PontosDisciplina.PERIODICO_B1 * relProfessorDisciplina.numero_alunos
+                return pontos
+
+            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.B2:
+                pontos = PontosDisciplina.PERIODICO_B2 * relProfessorDisciplina.numero_alunos
+                return pontos
+
+            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.B3_B5:
+                pontos = PontosDisciplina.PERIODICO_OUTROS * relProfessorDisciplina.numero_alunos
+                return pontos
+
+    def salvarRelProfessorDisciplina(self,relProfessorDisciplinas):
+
+        for relProfessorDisciplina in relProfessorDisciplinas:
+            relProfessorDisciplina.save()
+
+
+
+
+
+
+

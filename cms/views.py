@@ -12,6 +12,7 @@ from .forms import CargoForm
 from .models import cargo
 from .forms import RankingForm
 from .forms import InfoProfForm
+from .models import rel_professor_disciplina
 
 
 # Create your views here.
@@ -332,12 +333,84 @@ def professorDisciplinaPasso2(request):
 
     if request.method == 'POST':
         form = InfoProfForm()
+        idProfessor = request.GET.get('vincula')
+        cargos = form.carregarCargoDto(idProfessor)
+        disciplinas = form.carregarDisciplinaDTO(idProfessor)
+        semestre = request.POST.get('semestre')
+        ano = request.POST.get('ano')
+        professor = form.retornarProfId(idProfessor)
+
+        relProfessorDisciplinas = []
+
+        for cargo in cargos:
+            relProfessorDisciplina = rel_professor_disciplina()
+
+            idCargo = request.POST.get(str(cargo.nome))
+
+            if (idCargo == str(cargo.nome) or idCargo == 'on'):
+                cargoClass = form.retornarCargoPorId(cargo.idCargo)
+                relProfessorDisciplina.id_cargo = cargoClass
+                relProfessorDisciplina.ano = ano
+                relProfessorDisciplina.semestre = semestre
+                relProfessorDisciplina.id_professor = professor
+                relProfessorDisciplina.pontos = form.retornarQuantidadePontos(relProfessorDisciplina)
+
+            relProfessorDisciplinas.append(relProfessorDisciplina)
+
+        for disciplina in disciplinas:
+            relProfessorDisciplina = rel_professor_disciplina()
+
+            idDisciplina = request.POST.getlist(str(disciplina.idDisciplina))
+
+            if idDisciplina != None:
+
+                print(str(idDisciplina) + 'OBJETO INTEIRO')
+
+                tamanho = len(idDisciplina)
+
+                print(str(disciplina.idDisciplina) + ' ' + str(tamanho) + '\n\n')
+
+                if (tamanho > 0 and (idDisciplina[0] == str(disciplina.idDisciplina) or idDisciplina[0] == 'on')):
+                    print (str(idDisciplina[0]) + 'PRIMEIRO COMPONENTE')
+                    disciplinaClass = form.retornarDisciplinaPorId(disciplina.idDisciplina)
+                    relProfessorDisciplina.id_disciplina = disciplinaClass
+
+                if (tamanho > 1 and idDisciplina[1] == 'diurno'):
+                    print (str(idDisciplina[1]) + 'SEGUNDO COMPONENTE')
+                    relProfessorDisciplina.turno = 'Diurno'
+                else:
+                    if (tamanho > 1 and idDisciplina[1]) == 'noturno':
+                        print (str(idDisciplina[1]) + 'SEGUNDO COMPONENTE')
+                        relProfessorDisciplina.turno = 'Noturno'
+                    else:
+                        if (tamanho > 1 and int(idDisciplina[1]) > 0):
+                            relProfessorDisciplina.numero_alunos = idDisciplina[1]
+
+                if (tamanho > 2 and idDisciplina[2] != None):
+                    if int(idDisciplina[2]) > 0:
+                        print (str(idDisciplina[2]) + 'TERCEIRO COMPONENTE')
+                        relProfessorDisciplina.numero_alunos = idDisciplina[2]
+
+
+                relProfessorDisciplina.id_professor = professor
+                relProfessorDisciplina.ano = ano
+                relProfessorDisciplina.semestre = semestre
+                relProfessorDisciplina.pontos = form.retornarQuantidadePontos(relProfessorDisciplina)
+
+            relProfessorDisciplinas.append(relProfessorDisciplina)
+
+            form.salvarRelProfessorDisciplina(relProfessorDisciplinas)
+
+            context['professor'] = professor
+            context['cargos'] = cargos
+            context['disciplinas'] = disciplinas
 
     else:
 
         idProfessor = request.GET.get('vincula')
         form = InfoProfForm()
         cargos = form.carregarCargoDto(idProfessor)
+
         disciplinas = form.carregarDisciplinaDTO(idProfessor)
         professor = form.retornarProfId(idProfessor)
 

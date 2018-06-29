@@ -50,7 +50,7 @@
 
           <div class="col-lg-5 col-md-8">
             <div class="form">
-              <form action="#professor" method="post">
+              <form action="#professorDisciplinaPasso2" method="post">
                 {% csrf_token %}
 
                 <div class="form-group">
@@ -73,10 +73,10 @@
                 <div class="form-check">
                   {% for cargo in cargos %}
                     {% if cargo.checked == False %}
-                      <input type="checkbox" class="form-check-input" id = "{{cargo.nome}}" name="{{cargo.idCargo}}"/>
+                      <input type="checkbox" class="form-check-input" id = "{{cargo.nome}}" name="{{cargo.nome}}"/>
                       <label class="form-check-label" for="{{cargo.nome}}">{{cargo.nome}}</label>
                     {% else %}
-                      <input type="checkbox" class="form-check-input" id = "{{cargo.nome}}" value="{{cargo.idCargo}}" name="{{cargo.idCargo}}" checked/>
+                      <input type="checkbox" class="form-check-input" id = "{{cargo.nome}}" value="{{cargo.idCargo}}" name="{{cargo.nome}}" checked/>
                       <label class="form-check-label" for="{{cargo.nome}}">{{cargo.nome}}</label>
                     {% endif %}
                   </br>
@@ -96,34 +96,34 @@
                 </div>
                 {% if disciplina.turno == 'diurno' %}
                 <div class="form-check form-check-inline">
-                    <input type="checkbox" class="form-check-input"  value="diurno" name="{{disciplina.id_disciplina}}" checked/>
+                    <input type="checkbox" class="form-check-input"  value="diurno" name="{{disciplina.idDisciplina}}" checked/>
                       <label class="form-check-label">Diurno</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input type="checkbox" class="form-check-input"  value="noturno" name="{{disciplina.id_disciplina}}" />
+                    <input type="checkbox" class="form-check-input"  value="noturno" name="{{disciplina.idDisciplina}}" />
                       <label class="form-check-label">Noturno</label>
                 </div>
                   {% elif disciplina.turno == 'noturno' %}
                 <div class="form-check form-check-inline">
-                    <input type="checkbox" class="form-check-input"  value="diurno" name="{{disciplina.id_disciplina}}" />
+                    <input type="checkbox" class="form-check-input"  value="diurno" name="{{disciplina.idDisciplina}}" />
                       <label class="form-check-label">Diurno</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input type="checkbox" class="form-check-input"  value="noturno" name="{{disciplina.id_disciplina}}" checked/>
+                    <input type="checkbox" class="form-check-input"  value="noturno" name="{{disciplina.idDisciplina}}" checked/>
                       <label class="form-check-label">Noturno</label>
                 </div>
                   {% else %}
                     <div class="form-check form-check-inline">
-                    <input type="checkbox" class="form-check-input"  value="diurno" name="{{disciplina.id_disciplina}}" />
+                    <input type="checkbox" class="form-check-input"  value="diurno" name="{{disciplina.idDisciplina}}" />
                       <label class="form-check-label">Diurno</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input type="checkbox" class="form-check-input"  value="noturno" name="{{disciplina.id_disciplina}}" />
+                    <input type="checkbox" class="form-check-input"  value="noturno" name="{{disciplina.idDisciplina}}" />
                       <label class="form-check-label">Noturno</label>
                 </div>
                   {% endif %}
                 <div class="form-check form-check-inline">
-                  <input type="number" class="form-control" value="{{numeroAlunos}}" name="{{disciplina.id_disciplina}}" id="numeroAlunos" placeholder="Número de Alunos"/>
+                  <input type="number" class="form-control" value="{{numeroAlunos}}" name="{{disciplina.idDisciplina}}" id="numeroAlunos" placeholder="Número de Alunos"/>
                 </div>
                 <br/>
                 {% endfor %}

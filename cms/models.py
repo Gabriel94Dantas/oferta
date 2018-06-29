@@ -177,7 +177,7 @@ class cargo (models.Model):
     id_cargo = models.AutoField(primary_key = True)
     nome = models.CharField('Nome do cargo', max_length = 500)
     ativo = models.BooleanField(default = True)
-    pontos = models.FloatField('Cadastro dos pontos', null = False)
+    pontos = models.FloatField('Cadastro dos pontos', null = False, default = 0.0)
     objects = cargo_manager()
 
 
@@ -190,3 +190,4 @@ class rel_professor_disciplina (models.Model):
     ano =  models.IntegerField('Ano gravado', null = True)
     pontos = models.FloatField('Cadastro dos pontos desta relacao', null = True)
     turno = models.CharField('Determina se a materia e noturna ou diurna', max_length = 100,null = True)
+    numero_alunos = models.IntegerField('Numero de alunos na disciplina', null = True)

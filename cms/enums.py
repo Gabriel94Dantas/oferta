@@ -12,3 +12,17 @@ class PontosDisciplina(Enum):
     PERIODICO_B1 = 0.5
     PERIODICO_B2 = 0.25
     PERIODICO_OUTROS = 0.05
+
+
+class TipoDisciplina(Enum):
+    GRADUACAO = 3
+    TRABALHO_GRADUACAO = 4
+    PROJETO_LICENCIATURA = 5
+    INICIACAO_CIENTIFICA = 6
+    MESTREDO = 7
+    DOUTORADO = 8
+    A1 = 9
+    A2 = 10
+    B1 = 11
+    B2 = 12
+    B3_B5 = 13
