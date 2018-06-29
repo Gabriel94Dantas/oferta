@@ -144,6 +144,8 @@ class InfoProfForm(forms.Form):
         cargos = self.carregarTodosCargos()
         cargosProf = self.retornarCargoProf(idProfessor)
 
+        print(str(cargosProf) + 'Cargo Professor')
+
         cargosDTO = []
         for cargo in cargos:
             cargoDTO = cargoProf()
@@ -205,55 +207,61 @@ class InfoProfForm(forms.Form):
 
         else:
 
-            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.GRADUACAO:
-                if relProfessorDisciplina == 'Diurno':
-                    pontos = relProfessorDisciplina.id_disciplina.creditos * PontosDisciplina.DISCIPLINA_DIURNO
+            print('PRINT ENUM')
+            print(PontosDisciplina.PROJETO_GRADUACAO.value)
+
+            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.GRADUACAO.value:
+                if relProfessorDisciplina.turno == 'Diurno':
+                    pontos = relProfessorDisciplina.id_disciplina.creditos * PontosDisciplina.DISCIPLINA_DIURNO.value
                 else:
-                    pontos = relProfessorDisciplina.id_disciplina.creditos * PontosDisciplina.DISCIPLINA_NOTURNO
+                    pontos = relProfessorDisciplina.id_disciplina.creditos * PontosDisciplina.DISCIPLINA_NOTURNO.value
 
-                if relProfessorDisciplina.numero_alunos < 6:
-                    pontos = pontos / 2
+                if int(relProfessorDisciplina.numero_alunos) < 6:
+                    print('Passei para dividir')
+                    print(pontos)
+                    print (float(float(pontos) / 2))
+                    return float(float(pontos) / 2)
 
                 return pontos
 
-            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.TRABALHO_GRADUACAO:
-                pontos = PontosDisciplina.PROJETO_GRADUACAO * relProfessorDisciplina.numero_alunos
+            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.TRABALHO_GRADUACAO.value:
+                pontos = PontosDisciplina.PROJETO_GRADUACAO.value * float(relProfessorDisciplina.numero_alunos)
                 return pontos
 
-            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.PROJETO_LICENCIATURA:
-                pontos = PontosDisciplina.PROJETO_GRADUACAO * relProfessorDisciplina.numero_alunos
+            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.PROJETO_LICENCIATURA.value:
+                pontos = PontosDisciplina.PROJETO_GRADUACAO.value * float(relProfessorDisciplina.numero_alunos)
                 return pontos
 
-            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.INICIACAO_CIENTIFICA:
-                pontos = PontosDisciplina.PERIODICO_OUTROS * relProfessorDisciplina.numero_alunos
+            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.INICIACAO_CIENTIFICA.value:
+                pontos = PontosDisciplina.PERIODICO_OUTROS.value * float(relProfessorDisciplina.numero_alunos)
                 return pontos
 
-            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.MESTREDO:
-                pontos = PontosDisciplina.PROJETO_MESTRADO * relProfessorDisciplina.numero_alunos
+            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.MESTREDO.value:
+                pontos = PontosDisciplina.PROJETO_MESTRADO.value * float(relProfessorDisciplina.numero_alunos)
                 return pontos
 
-            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.DOUTORADO:
-                pontos = PontosDisciplina.PROJETO_DOUTORADO * relProfessorDisciplina.numero_alunos
+            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.DOUTORADO.value:
+                pontos = PontosDisciplina.PROJETO_DOUTORADO.value * float(relProfessorDisciplina.numero_alunos)
                 return pontos
 
-            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.A1:
-                pontos = PontosDisciplina.PERIODICO_A1 *  relProfessorDisciplina.numero_alunos
+            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.A1.value:
+                pontos = PontosDisciplina.PERIODICO_A1.value *  float(relProfessorDisciplina.numero_alunos)
                 return pontos
 
-            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.A2:
-                pontos = PontosDisciplina.PERIODICO_A2 * relProfessorDisciplina.numero_alunos
+            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.A2.value:
+                pontos = PontosDisciplina.PERIODICO_A2.value * float(relProfessorDisciplina.numero_alunos)
                 return pontos
 
-            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.B1:
-                pontos = PontosDisciplina.PERIODICO_B1 * relProfessorDisciplina.numero_alunos
+            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.B1.value:
+                pontos = PontosDisciplina.PERIODICO_B1.value * float(relProfessorDisciplina.numero_alunos)
                 return pontos
 
-            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.B2:
-                pontos = PontosDisciplina.PERIODICO_B2 * relProfessorDisciplina.numero_alunos
+            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.B2.value:
+                pontos = PontosDisciplina.PERIODICO_B2.value * float(relProfessorDisciplina.numero_alunos)
                 return pontos
 
-            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.B3_B5:
-                pontos = PontosDisciplina.PERIODICO_OUTROS * relProfessorDisciplina.numero_alunos
+            if relProfessorDisciplina.id_disciplina.id_tipo_disciplina.id_tipo_disciplina == TipoDisciplina.B3_B5.value:
+                pontos = PontosDisciplina.PERIODICO_OUTROS.value * float(relProfessorDisciplina.numero_alunos)
                 return pontos
 
     def salvarRelProfessorDisciplina(self,relProfessorDisciplinas):

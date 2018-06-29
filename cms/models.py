@@ -158,7 +158,7 @@ class cargo_manager(models.Manager):
         ).first()
 
     def retornarCargosProfessor(self,query):
-        self.raw('SELECT c.* from cms_cargo as c inner join cms_rel_professor_disciplina as rpd ' +
+        return self.raw('SELECT c.* from cms_cargo as c inner join cms_rel_professor_disciplina as rpd ' +
             'on c.id_cargo = rpd.id_cargo_id ' +
             'where rpd.id_professor_id = %s', [str(query)])
 

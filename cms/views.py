@@ -343,11 +343,12 @@ def professorDisciplinaPasso2(request):
         relProfessorDisciplinas = []
 
         for cargo in cargos:
-            relProfessorDisciplina = rel_professor_disciplina()
+
 
             idCargo = request.POST.get(str(cargo.nome))
 
             if (idCargo == str(cargo.nome) or idCargo == 'on'):
+                relProfessorDisciplina = rel_professor_disciplina()
                 cargoClass = form.retornarCargoPorId(cargo.idCargo)
                 relProfessorDisciplina.id_cargo = cargoClass
                 relProfessorDisciplina.ano = ano
@@ -355,10 +356,9 @@ def professorDisciplinaPasso2(request):
                 relProfessorDisciplina.id_professor = professor
                 relProfessorDisciplina.pontos = form.retornarQuantidadePontos(relProfessorDisciplina)
 
-            relProfessorDisciplinas.append(relProfessorDisciplina)
+                relProfessorDisciplinas.append(relProfessorDisciplina)
 
         for disciplina in disciplinas:
-            relProfessorDisciplina = rel_professor_disciplina()
 
             idDisciplina = request.POST.getlist(str(disciplina.idDisciplina))
 
@@ -371,44 +371,47 @@ def professorDisciplinaPasso2(request):
                 print(str(disciplina.idDisciplina) + ' ' + str(tamanho) + '\n\n')
 
                 if (tamanho > 0 and (idDisciplina[0] == str(disciplina.idDisciplina) or idDisciplina[0] == 'on')):
+                    relProfessorDisciplina = rel_professor_disciplina()
                     print (str(idDisciplina[0]) + 'PRIMEIRO COMPONENTE')
                     disciplinaClass = form.retornarDisciplinaPorId(disciplina.idDisciplina)
                     relProfessorDisciplina.id_disciplina = disciplinaClass
 
-                if (tamanho > 1 and idDisciplina[1] == 'diurno'):
-                    print (str(idDisciplina[1]) + 'SEGUNDO COMPONENTE')
-                    relProfessorDisciplina.turno = 'Diurno'
-                else:
-                    if (tamanho > 1 and idDisciplina[1]) == 'noturno':
+                    if (tamanho > 1 and idDisciplina[1] == 'diurno'):
                         print (str(idDisciplina[1]) + 'SEGUNDO COMPONENTE')
-                        relProfessorDisciplina.turno = 'Noturno'
+                        relProfessorDisciplina.turno = 'Diurno'
                     else:
-                        if (tamanho > 1 and int(idDisciplina[1]) > 0):
-                            relProfessorDisciplina.numero_alunos = idDisciplina[1]
+                        if (tamanho > 1 and idDisciplina[1]) == 'noturno':
+                            print (str(idDisciplina[1]) + 'SEGUNDO COMPONENTE')
+                            relProfessorDisciplina.turno = 'Noturno'
+                        else:
+                            if (tamanho > 1 and int(idDisciplina[1]) > 0):
+                                relProfessorDisciplina.numero_alunos = idDisciplina[1]
 
-                if (tamanho > 2 and idDisciplina[2] != None):
-                    if int(idDisciplina[2]) > 0:
-                        print (str(idDisciplina[2]) + 'TERCEIRO COMPONENTE')
-                        relProfessorDisciplina.numero_alunos = idDisciplina[2]
+                    if (tamanho > 2 and idDisciplina[2] != None):
+                        if int(idDisciplina[2]) > 0:
+                            print (str(idDisciplina[2]) + 'TERCEIRO COMPONENTE')
+                            relProfessorDisciplina.numero_alunos = idDisciplina[2]
 
 
-                relProfessorDisciplina.id_professor = professor
-                relProfessorDisciplina.ano = ano
-                relProfessorDisciplina.semestre = semestre
-                relProfessorDisciplina.pontos = form.retornarQuantidadePontos(relProfessorDisciplina)
+                    relProfessorDisciplina.id_professor = professor
+                    relProfessorDisciplina.ano = ano
+                    relProfessorDisciplina.semestre = semestre
+                    relProfessorDisciplina.pontos = form.retornarQuantidadePontos(relProfessorDisciplina)
 
-            relProfessorDisciplinas.append(relProfessorDisciplina)
+                    relProfessorDisciplinas.append(relProfessorDisciplina)
 
-            form.salvarRelProfessorDisciplina(relProfessorDisciplinas)
+        form.salvarRelProfessorDisciplina(relProfessorDisciplinas)
 
-            context['professor'] = professor
-            context['cargos'] = cargos
-            context['disciplinas'] = disciplinas
+        context['professor'] = professor
+        context['cargos'] = cargos
+        context['disciplinas'] = disciplinas
 
     else:
 
         idProfessor = request.GET.get('vincula')
         form = InfoProfForm()
+
+        print(idProfessor + ' idPROFESSOR')
         cargos = form.carregarCargoDto(idProfessor)
 
         disciplinas = form.carregarDisciplinaDTO(idProfessor)
