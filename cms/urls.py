@@ -9,5 +9,6 @@ urlpatterns = [
     url(r'^cadastroProfessor/$', views.cadastroProfessor, name='cadastroProfessor'),
     url(r'^cadastroDisciplina/$', views.cadastroDisciplina, name='cadastroDisciplina'),
     url(r'^cadastroCargo/$', views.cadastroCargo, name='cadastroCargo'),
-    url(r'^professorDisciplinaPasso1/$', views.professorDisciplinaPasso1, name='professorDisciplinaPasso1')
+    url(r'^professorDisciplinaPasso1/$', views.professorDisciplinaPasso1, name='professorDisciplinaPasso1'),
+    url(r'^professorDisciplinaPasso2/$', views.professorDisciplinaPasso2, name='professorDisciplinaPasso2')
 ]

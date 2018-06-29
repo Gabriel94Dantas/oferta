@@ -7,6 +7,8 @@ from .models import usuario
 from .models import tipo_disciplina
 from .models import cargo
 from .models import rel_professor_disciplina
+from .dtos import cargoProf
+from .dtos import DisciplinaDTO
 
 
 
@@ -131,7 +133,60 @@ class InfoProfForm(forms.Form):
     def retornarProfId(self,idprofessor):
         return professor.objects.retornarPorId(idprofessor)
 
-    def carregartodoscargos(self):
+    def carregarTodosCargos(self):
         return cargo.objects.retornarTodosAlfabetico()
 
-    def retornarCargoProf(self,idprofessor):
+    def retornarCargoProf(self,idProfessor):
+        return cargo.objects.retornarCargosProfessor(idProfessor)
+
+    def carregarCargoDto(self,idProfessor):
+        cargos = self.carregarTodosCargos()
+        cargosProf = self.retornarCargoProf(idProfessor)
+
+        cargosDTO = []
+        for cargo in cargos:
+            cargoDTO = cargoProf()
+            if (cargosProf != None and cargo in cargosProf):
+                cargoDTO.idCargo = cargo.id_cargo
+                cargoDTO.nome = cargo.nome
+                cargoDTO.checked = True
+            else:
+                cargoDTO.idCargo = cargo.id_cargo
+                cargoDTO.nome = cargo.nome
+                cargoDTO.checked = False
+
+            cargosDTO.append(cargoDTO)
+
+        return cargosDTO
+
+    def carregarTodasDisciplinas(self):
+        return disciplina.objects.retornarTodasDisciplinasAlfabetico()
+
+    def retornarDisciplinaProfessor(self,idProfessor):
+        return disciplina.objects.retornarDisciplinasProfessor(idProfessor)
+
+    def carregarDisciplinaDTO(self,idProfessor):
+        disciplinas = self.carregarTodasDisciplinas()
+        disciplinasProfessor = self.retornarDisciplinaProfessor(idProfessor)
+
+        disciplinasDTO = []
+
+        for disciplina in disciplinas:
+
+            disciplinaDTO = DisciplinaDTO()
+
+            if (disciplinasProfessor != None and disciplina in disciplinasProfessor):
+
+                disciplinaDTO.idDisciplina = disciplina.id_disciplina
+                disciplinaDTO.nome = disciplina.nome
+                disciplinaDTO.checked = True
+
+            else:
+
+                disciplinaDTO.idDisciplina = disciplina.id_disciplina
+                disciplinaDTO.nome = disciplina.nome
+                disciplinaDTO.checked = False
+
+            disciplinasDTO.append(disciplinaDTO)
+
+        return disciplinasDTO

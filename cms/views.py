@@ -11,6 +11,7 @@ from .forms import CadastroForm
 from .forms import CargoForm
 from .models import cargo
 from .forms import RankingForm
+from .forms import InfoProfForm
 
 
 # Create your views here.
@@ -322,5 +323,29 @@ def professorDisciplinaPasso1(request):
     context['ranks'] = ranks
     context['form'] = form
     template_name = 'oferta/vinculoProfessorDisciplina.html'
+
+    return render(request, template_name, context)
+
+
+def professorDisciplinaPasso2(request):
+    context = {}
+
+    if request.method == 'POST':
+        form = InfoProfForm()
+
+    else:
+
+        idProfessor = request.GET.get('vincula')
+        form = InfoProfForm()
+        cargos = form.carregarCargoDto(idProfessor)
+        disciplinas = form.carregarDisciplinaDTO(idProfessor)
+        professor = form.retornarProfId(idProfessor)
+
+        context['professor'] = professor
+        context['cargos'] = cargos
+        context['disciplinas'] = disciplinas
+
+    context['form'] = form
+    template_name = 'oferta/vinculoProfessorDisciplinaPasso2.html'
 
     return render(request, template_name, context)

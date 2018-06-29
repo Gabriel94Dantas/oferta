@@ -12,7 +12,7 @@
       <div class="container wow fadeInUp">
         <div class="section-header">
           <h3 class="section-title">Informação de Professor</h3>
-          <p class="section-description">Aqui deve aparecer a informação do professore selecionado</p>
+          <p class="section-description">Aqui será atribuído ao professor disciplina ou cargo com suas informações adicionais </p>
         </div>
       </div>
 <div class="container wow fadeInUp">
@@ -67,22 +67,69 @@
                 </div>
 
                    <div class="form-group">
-                  <input type="number" class="form-control" value="{{ano}}" name="ano" id="email" placeholder="Ano"/>
+                  <input type="number" class="form-control" value="{{ano}}" name="ano" id="ano" placeholder="Ano"/>
                 </div>
 
                 <div class="form-check">
                   {% for cargo in cargos %}
-                    {% if tipoProf != tipo.id_tipo_professor %}
-                      <input type="checkbox" class="form-check-input" id = "{{tipo.descricao}}" name="{{tipo.id_tipo_professor}}"/>
-                      <label class="form-check-label" for="{{tipo.descricao}}">{{tipo.descricao}}</label>
+                    {% if cargo.checked == False %}
+                      <input type="checkbox" class="form-check-input" id = "{{cargo.nome}}" name="{{cargo.idCargo}}"/>
+                      <label class="form-check-label" for="{{cargo.nome}}">{{cargo.nome}}</label>
                     {% else %}
-                      <input type="checkbox" class="form-check-input" id = "{{tipo.descricao}}" value="{{tipo.id_tipo_professor}}" name="{{tipo.id_tipo_professor}}" checked/>
-                      <label class="form-check-label" for="{{tipo.descricao}}">{{tipo.descricao}}</label>
+                      <input type="checkbox" class="form-check-input" id = "{{cargo.nome}}" value="{{cargo.idCargo}}" name="{{cargo.idCargo}}" checked/>
+                      <label class="form-check-label" for="{{cargo.nome}}">{{cargo.nome}}</label>
                     {% endif %}
                   </br>
                   {% endfor %}
                 </div>
+                <br/>
+                {% for disciplina in disciplinas %}
+                <div class="form-check form-check-inline">
+
+                    {% if disciplina.checked == False %}
+                      <input type="checkbox" class="form-check-input" id = "{{disciplina.nome}}" name="{{disciplina.idDisciplina}}"/>
+                      <label class="form-check-label" for="{{disciplina.nome}}">{{disciplina.nome}}</label>
+                    {% else %}
+                      <input type="checkbox" class="form-check-input" id = "{{disciplina.nome}}" value="{{disciplina.idDisciplina}}" name="{{disciplina.idDisciplina}}" checked/>
+                      <label class="form-check-label" for="{{disciplina.nome}}">{{disciplina.nome}}</label>
+                    {% endif %}
+                </div>
+                {% if disciplina.turno == 'diurno' %}
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" class="form-check-input"  value="diurno" name="{{disciplina.id_disciplina}}" checked/>
+                      <label class="form-check-label">Diurno</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" class="form-check-input"  value="noturno" name="{{disciplina.id_disciplina}}" />
+                      <label class="form-check-label">Noturno</label>
+                </div>
+                  {% elif disciplina.turno == 'noturno' %}
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" class="form-check-input"  value="diurno" name="{{disciplina.id_disciplina}}" />
+                      <label class="form-check-label">Diurno</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" class="form-check-input"  value="noturno" name="{{disciplina.id_disciplina}}" checked/>
+                      <label class="form-check-label">Noturno</label>
+                </div>
+                  {% else %}
+                    <div class="form-check form-check-inline">
+                    <input type="checkbox" class="form-check-input"  value="diurno" name="{{disciplina.id_disciplina}}" />
+                      <label class="form-check-label">Diurno</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" class="form-check-input"  value="noturno" name="{{disciplina.id_disciplina}}" />
+                      <label class="form-check-label">Noturno</label>
+                </div>
+                  {% endif %}
+                <div class="form-check form-check-inline">
+                  <input type="number" class="form-control" value="{{numeroAlunos}}" name="{{disciplina.id_disciplina}}" id="numeroAlunos" placeholder="Número de Alunos"/>
+                </div>
+                <br/>
+                {% endfor %}
+                <br/>
                 <div class="text-center"><button  class="btn btn-info"type="submit">Salvar</button></div>
+                <br/>
               </form>
             </div>
           </div>

@@ -134,6 +134,11 @@ class disciplina_manager(models.Manager):
             id_disciplina__exact = query
         ).first()
 
+    def retornarDisciplinasProfessor(self, query):
+        return self.raw('SELECT d.* from cms_disciplina as d inner join cms_rel_professor_disciplina as rpd ' +
+            'on d.id_disciplina = rpd.id_disciplina_id ' +
+            'where rpd.id_professor_id = %s', [query])
+
 class disciplina (models.Model):
     id_disciplina = models.AutoField(primary_key = True)
     nome = models.CharField('Nome da disciplina', max_length = 500)
@@ -151,6 +156,11 @@ class cargo_manager(models.Manager):
         return self.get_queryset().filter(
             id_cargo__exact = query
         ).first()
+
+    def retornarCargosProfessor(self,query):
+        self.raw('SELECT c.* from cms_cargo as c inner join cms_rel_professor_disciplina as rpd ' +
+            'on c.id_cargo = rpd.id_cargo_id ' +
+            'where rpd.id_professor_id = %s', [str(query)])
 
     def editarCargo(self, query, cargoEditar):
         self.filter(id_cargo__exact = query).update(
